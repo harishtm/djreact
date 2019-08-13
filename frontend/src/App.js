@@ -17,21 +17,25 @@ class App extends Component {
       todoList: []
     };
   }
+
   componentDidMount() {
     this.refreshList();
   }
+
   refreshList = () => {
     axios
       .get("http://localhost:8000/api/todos/")
       .then(res => this.setState({ todoList: res.data }))
       .catch(err => console.log(err));
   };
+
   displayCompleted = status => {
     if (status) {
       return this.setState({ viewCompleted: true });
     }
     return this.setState({ viewCompleted: false });
   };
+
   renderTabList = () => {
     return (
       <div className="my-5 tab-list">
@@ -50,6 +54,7 @@ class App extends Component {
       </div>
     );
   };
+
   renderItems = () => {
     const { viewCompleted } = this.state;
     const newItems = this.state.todoList.filter(
@@ -60,13 +65,16 @@ class App extends Component {
         key={item.id}
         className="list-group-item d-flex justify-content-between align-items-center"
       >
-        <span
-          className={`todo-title mr-2 ${
-            this.state.viewCompleted ? "completed-todo" : ""
-          }`}
+        <span className={`todo-title mr-2 ${ this.state.viewCompleted ? "completed-todo" : ""}`}
           title={item.description}
         >
           {item.title}
+        </span>
+        <span
+            className={`todo-description mr-2 ${this.state.viewCompleted ? "completed-todo": ""} `}
+        >
+            {item.description}
+
         </span>
         <span>
           <button
@@ -86,9 +94,11 @@ class App extends Component {
       </li>
     ));
   };
+
   toggle = () => {
     this.setState({ modal: !this.state.modal });
   };
+
   handleSubmit = item => {
     this.toggle();
     if (item.id) {
@@ -101,18 +111,24 @@ class App extends Component {
       .post("http://localhost:8000/api/todos/", item)
       .then(res => this.refreshList());
   };
+
   handleDelete = item => {
     axios
       .delete(`http://localhost:8000/api/todos/${item.id}`)
       .then(res => this.refreshList());
   };
+
   createItem = () => {
     const item = { title: "", description: "", completed: false };
     this.setState({ activeItem: item, modal: !this.state.modal });
+    console.log(this.state.modal, item)
   };
+
   editItem = item => {
+    console.log(this.state.modal, item)
     this.setState({ activeItem: item, modal: !this.state.modal });
   };
+
   render() {
     return (
       <main className="content">
