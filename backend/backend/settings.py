@@ -123,7 +123,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+# White List URL
 CORS_ORIGIN_WHITELIST = (
          'http://localhost:3000',
          'http://localhost:8000',
